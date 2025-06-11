@@ -1,55 +1,43 @@
 package com.api.envio.controllers;
 
-import java.util.List;
-import java.util.Map;
+import com.api.envio.dto.EnvioDTO;
+import com.api.envio.services.EnvioServices;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.api.envio.models.Envio;
-import com.api.envio.service.EnvioService;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/envios")
-@RequiredArgsConstructor
 public class EnvioController {
 
-    private final EnvioService envioService;
+    @Autowired
+    private EnvioServices envioServices;
+
+    @PostMapping
+    public ResponseEntity<EnvioDTO> crear(@RequestBody EnvioDTO dto) {
+        return ResponseEntity.ok(envioServices.crear(dto));
+    }
 
     @GetMapping
-    public List<Envio> getAll() {
-        return envioService.listarEnvios();
+    public ResponseEntity<List<EnvioDTO>> listar() {
+        return ResponseEntity.ok(envioServices.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Integer id) {
-        try {
-            Envio envio = envioService.buscarEnvioPorId(id);
-            return ResponseEntity.ok(envio);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body(Map.of("mensaje", ex.getMessage()));
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<Envio> crear(@RequestBody Envio nuevoEnvio) {
-        Envio creado = envioService.crearEnvio(nuevoEnvio);
-        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    public ResponseEntity<EnvioDTO> buscar(@PathVariable Integer id) {
+        return ResponseEntity.ok(envioServices.buscar(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Envio> actualizar(@PathVariable Integer id, @RequestBody Envio envioActualizado) {
-        Envio actualizado = envioService.actualizarEnvio(id, envioActualizado);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<EnvioDTO> actualizar(@PathVariable Integer id, @RequestBody EnvioDTO dto) {
+        return ResponseEntity.ok(envioServices.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
-        envioService.eliminarEnvio(id);
+        envioServices.eliminar(id);
         return ResponseEntity.noContent().build();
     }
 }

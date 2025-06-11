@@ -1,10 +1,12 @@
 package com.api.envio.models;
 
+import java.sql.Date;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "envio")
+@Table(name = "envios")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,12 +14,9 @@ public class Envio {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_envio")
-    private Integer id;
-
-    private String fechaEnvio;
-    private String direccionDestino;
-    private String estado;
-    private String transportista;
-    private String fechaEntregaEstimada;
+    @Column(name = "envios")
+    private Integer IdEnvio;
+    private Date FechaEnvio;
+    private String direccion;
+    private String EstadoEnvio;
 }

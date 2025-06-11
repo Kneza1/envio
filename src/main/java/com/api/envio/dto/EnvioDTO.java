@@ -1,12 +1,14 @@
 package com.api.envio.dto;
 
-import lombok.Data;
+import lombok.*;
+import java.sql.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EnvioDTO {
-    private String fechaEnvio;
-    private String direccionDestino;
-    private String estado;
-    private String transportista;
-    private String fechaEntregaEstimada;
+    private Integer IdEnvio;
+    private Date FechaEnvio;
+    private String direccion;
+    private String EstadoEnvio;
 }
